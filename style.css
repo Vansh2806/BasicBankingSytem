@@ -1,0 +1,27 @@
+body
+{
+    margin: 0;
+}
+.header
+{
+    background-color:#F98A1D;
+    height: 100px;
+    width: 100%;
+}
+.heading
+{
+    position: absolute;
+    top: 0%;
+    left: 29%;
+    font-size: 45px;
+    font-weight: bolder;
+    color: #fff;
+}
+.logo
+{
+    height: 100px;
+    width: 7%;
+    position: absolute;
+    top: 0%;
+    left: 20%;
+}
