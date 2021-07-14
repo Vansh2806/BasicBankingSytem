@@ -1,15 +1,21 @@
 <?php
 $connect = new PDO("mysql:host=localhost;dbname=bankingsystem", "root", "");
-
-$sql = "SELECT * FROM customer_details ORDER BY cust_id";
+$email = $_REQUEST['email'];
+$sql = "SELECT * FROM customer_details WHERE cust_email = '".$email."'";
 
 $statement = $connect->prepare($sql);
 $statement->execute();
 
 $rows=$statement->fetchAll();
+$sql = "SELECT * FROM transaction_details WHERE cust_email = '".$email."'";
+
+$statement = $connect->prepare($sql);
+$statement->execute();
+
+$rows1=$statement->fetchAll();
+
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,7 +45,7 @@ $rows=$statement->fetchAll();
 
     <div class="nav-links">
         <a href="/BasicBankingSystem/index.html" >Home</a>
-        <a href="#viewContainer">View Customers Details</a>
+        <a href="/BasicBankingSystem/ViewCustomer.php">View Customers Details</a>
         <form method="post">
             <input type="text" class="textbox" placeholder="Search">
             <input title="Search" value="" type="submit" class="button">
@@ -53,23 +59,49 @@ $rows=$statement->fetchAll();
             <th class="tg-baqh"><span style="font-weight:bold">Customer Name</span></th>
             <th class="tg-amwm">Customer Email </th>
             <th class="tg-amwm">Current Balance</th>
-            <th class="tg-amwm">Actions</th>
+
         </tr>
         </thead>
         <tbody>
-<?php
-foreach($rows as $rec)
-{
+        <?php
+        foreach($rows as $rec)
+        {
 
-?>
+            ?>
+            <tr>
+                <td class="tg-0lax"> <?php echo $rec['cust_name']?></td>
+                <td class="tg-0lax"><?php echo $rec['cust_email']?></td>
+                <td class="tg-0lax"> &#x20b9; <?php echo $rec['cust_amount']?></td>
+
+            </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+</div>
+<h1 class="headingTransaction">Transaction History</h1>
+<div class="transactionContainer">
+    <table class="tg">
+        <thead>
         <tr>
-            <td class="tg-0lax"> <?php echo $rec['cust_name']?></td>
-            <td class="tg-0lax"><?php echo $rec['cust_email']?></td>
-            <td class="tg-0lax"> &#x20b9; <?php echo $rec['cust_amount']?></td>
-            <td class="tg-0lax"><div class="actions"><a href=<?php echo '"'."viewTransaction.php?email=".$rec['cust_email'].'"'?> ><i class="fa fa-eye" aria-hidden="true"></i></a><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                </div></td>
+            <th class="tg-baqh"><span style="font-weight:bold">Transaction Name</span></th>
+            <th class="tg-amwm">CR/DR </th>
+            <th class="tg-amwm">Transaction Amount</th>
+
         </tr>
-<?php } ?>
+        </thead>
+        <tbody>
+        <?php
+        foreach($rows1 as $rec1)
+        {
+
+            ?>
+            <tr>
+                <td class="tg-0lax"> <?php echo $rec1['trans_name']?></td>
+                <td class="tg-0lax"><?php echo $rec1['trans_type']?></td>
+                <td class="tg-0lax"> &#x20b9; <?php echo $rec1['trans_amount']?></td>
+
+            </tr>
+        <?php } ?>
         </tbody>
     </table>
 </div>
